@@ -41,15 +41,15 @@ class CryptoDataTable extends StatelessWidget {
             Text(
               subtitle,
               style: const TextStyle(
-                  color: Colors.white,
+                  color: Colors.white60,
                   fontWeight: FontWeight.normal,
-                  fontSize: 16),
+                  fontSize: 12),
             )
           ],
         ),
         Column(
           children: [
-            Text(price.toString(),
+            Text(" ₹" + price.toString(),
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -78,7 +78,7 @@ class CryptoDataTable extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             color: Color(0xffffaec8),
-            child: Text(totalpercentage.toString(),
+            child: Text(" -" + totalpercentage.toString() + " %",
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,

@@ -45,7 +45,7 @@ class ReuseAbleCrypto extends StatelessWidget {
             ],
           ),
           Column(
-            children: [Text(title), Text(subtitle)],
+            children: [Text(" ₹" + title), Text("%" + subtitle)],
           )
         ],
       ),

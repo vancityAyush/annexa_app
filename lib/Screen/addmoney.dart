@@ -14,9 +14,9 @@ class _AddMoneyState extends State<AddMoney> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: Color(0xff150c3f),
         appBar: AppBar(
-            backgroundColor: Colors.deepPurple,
+            backgroundColor: Color(0xff29114d),
             leading: IconButton(
                 onPressed: () {}, icon: const Icon(Icons.arrow_back)),
             title: const ReuseableText(
@@ -57,7 +57,7 @@ class _AddMoneyState extends State<AddMoney> {
                     keyboardType: TextInputType.number,
                     textAlignVertical: TextAlignVertical.center,
                     decoration: InputDecoration(
-                        fillColor: Colors.deepPurple,
+                        fillColor: Color(0xff29114d),
                         filled: true,
                         contentPadding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 20),
@@ -92,7 +92,7 @@ class _AddMoneyState extends State<AddMoney> {
                 children: [
                   Container(
                     margin: EdgeInsets.only(bottom: 100),
-                    child: ReuseableText(
+                    child: const ReuseableText(
                         text: 'Min,100',
                         size: 14,
                         fontWeight: FontWeight.bold,

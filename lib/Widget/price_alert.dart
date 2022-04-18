@@ -17,14 +17,14 @@ class ReuseAblePriceAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height / 8,
+      height: MediaQuery.of(context).size.height / 10,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(left: 14),
                 child: getImage(context, image: image, type: IMAGE_TYPE.jpg),
               ),
               Padding(
@@ -34,7 +34,7 @@ class ReuseAblePriceAlert extends StatelessWidget {
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 20),
+                      fontSize: 18),
                 ),
               )
             ],
@@ -45,14 +45,14 @@ class ReuseAblePriceAlert extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 16, bottom: 20),
                 child: Text(
                   price,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.normal),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(right: 16, bottom: 20),
+                padding: const EdgeInsets.only(right: 20, bottom: 20),
                 child: icon,
               )
             ],

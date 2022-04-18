@@ -26,76 +26,96 @@ class _OrderState extends State<Order> {
               color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
         ),
       ),
-      body: GestureDetector(
-        onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => PriceAlert()));
-        },
-        child: Column(
-          children: [
-            ReuseAbleCard(
-                totalAmount: 10234.78,
-                price: '123.4',
-                subtitle: 'Fantom',
-                title: 'SELL',
-                image: 'bitcoin',
-                quantity: 84,
-                date: date),
-            buildDashedLine(),
-            ReuseAbleCard(
-                totalAmount: 10234.78,
-                price: '123.4',
-                subtitle: 'Fantom',
-                title: 'SELL',
-                image: 'bitcoin',
-                quantity: 84,
-                date: date),
-            buildDashedLine(),
-            ReuseAbleCard(
-                totalAmount: 10234.78,
-                price: '123.4',
-                subtitle: 'Fantom',
-                title: 'SELL',
-                image: 'bitcoin',
-                quantity: 84,
-                date: date),
-            buildDashedLine(),
-            ReuseAbleCard(
-                totalAmount: 10234.78,
-                price: '123.4',
-                subtitle: 'Fantom',
-                title: 'SELL',
-                image: 'bitcoin',
-                quantity: 84,
-                date: date),
-            buildDashedLine(),
-            ReuseAbleCard(
-                totalAmount: 10234.78,
-                price: '123.4',
-                subtitle: 'Fantom',
-                title: 'SELL',
-                image: 'bitcoin',
-                quantity: 84,
-                date: date),
-            buildDashedLine(),
-            ReuseAbleCard(
-                totalAmount: 10234.78,
-                price: '123.4',
-                subtitle: 'Fantom',
-                title: 'SELL',
-                image: 'bitcoin',
-                quantity: 84,
-                date: date),
-            buildDashedLine(),
-            ReuseAbleCard(
-                totalAmount: 10234.78,
-                price: '123.4',
-                subtitle: 'Fantom',
-                title: 'SELL',
-                image: 'bitcoin',
-                quantity: 84,
-                date: date),
-          ],
+      body: SingleChildScrollView(
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => PriceAlert()));
+          },
+          child: Column(
+            children: [
+              ReuseAbleCard(
+                  totalAmount: 10234.78,
+                  price: '123.4',
+                  subtitle: 'Fantom',
+                  title: 'SELL',
+                  image: 'bitcoin',
+                  quantity: 84,
+                  date: date),
+              Divider(
+                thickness: 0.5,
+                color: Colors.white60,
+              ),
+              ReuseAbleCard(
+                  totalAmount: 10234.78,
+                  price: '123.4',
+                  subtitle: 'Fantom',
+                  title: 'SELL',
+                  image: 'bitcoin',
+                  quantity: 84,
+                  date: date),
+              Divider(
+                thickness: 0.5,
+                color: Colors.white60,
+              ),
+              ReuseAbleCard(
+                  totalAmount: 10234.78,
+                  price: '123.4',
+                  subtitle: 'Fantom',
+                  title: 'SELL',
+                  image: 'bitcoin',
+                  quantity: 84,
+                  date: date),
+              Divider(
+                thickness: 0.5,
+                color: Colors.white60,
+              ),
+              ReuseAbleCard(
+                  totalAmount: 10234.78,
+                  price: '123.4',
+                  subtitle: 'Fantom',
+                  title: 'SELL',
+                  image: 'bitcoin',
+                  quantity: 84,
+                  date: date),
+              const Divider(
+                thickness: 0.5,
+                color: Colors.white60,
+              ),
+              ReuseAbleCard(
+                  totalAmount: 10234.78,
+                  price: '123.4',
+                  subtitle: 'Fantom',
+                  title: 'SELL',
+                  image: 'bitcoin',
+                  quantity: 84,
+                  date: date),
+              Divider(
+                thickness: 0.5,
+                color: Colors.white60,
+              ),
+              ReuseAbleCard(
+                  totalAmount: 10234.78,
+                  price: '123.4',
+                  subtitle: 'Fantom',
+                  title: 'SELL',
+                  image: 'bitcoin',
+                  quantity: 84,
+                  date: date),
+              Divider(
+                thickness: 0.5,
+                color: Colors.white60,
+              ),
+              ReuseAbleCard(
+                  totalAmount: 10234.78,
+                  price: '123.4',
+                  subtitle: 'Fantom',
+                  title: 'SELL',
+                  image: 'bitcoin',
+                  quantity: 84,
+                  date: date),
+            ],
+          ),
         ),
       ),
     );

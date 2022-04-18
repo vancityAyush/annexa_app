@@ -1,3 +1,4 @@
+import 'package:annexa_app/Screen/signupscreen.dart';
 import 'package:flutter/material.dart';
 
 import '../Widget/reuseable_text.dart';
@@ -59,18 +60,17 @@ class SellBitCoin extends StatelessWidget {
                 )),
             SizedBox(
               height: MediaQuery.of(context).size.height / 3.1,
+              child: Image.asset("assets/images/png/buy_bitcoin.png"),
             ),
             GestureDetector(
               onTap: () {
-                /*    Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Address ()),
-                );*/
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SignupScreen()));
               },
               child: Container(
                   width: MediaQuery.of(context).size.width / 1.0,
-                  height: MediaQuery.of(context).size.height / 16,
-                  margin: const EdgeInsets.only(top: 40, left: 15, right: 15),
+                  height: MediaQuery.of(context).size.height / 18,
+                  margin: const EdgeInsets.only(top: 40, left: 20, right: 20),
                   decoration: BoxDecoration(
                     color: Colors.red,
                     borderRadius: BorderRadius.circular(10),

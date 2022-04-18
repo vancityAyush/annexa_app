@@ -83,7 +83,7 @@ class _PriceAlertState extends State<PriceAlert> {
                 ),
                 Container(
                     width: MediaQuery.of(context).size.width / 1.0,
-                    height: MediaQuery.of(context).size.height / 15,
+                    height: MediaQuery.of(context).size.height / 20,
                     margin: const EdgeInsets.only(top: 40, left: 15, right: 15),
                     decoration: BoxDecoration(
                       color: Colors.red,
@@ -155,7 +155,10 @@ class _PriceAlertState extends State<PriceAlert> {
                       color: Colors.grey,
                     ),
                     price: '43768,6'),
-                buildDashedLine(),
+                Divider(
+                  thickness: 0.5,
+                  color: Colors.white60,
+                ),
                 ReuseAblePriceAlert(
                     image: 'bitcoin',
                     title: 'Axie Infinity',
@@ -165,7 +168,10 @@ class _PriceAlertState extends State<PriceAlert> {
                       color: Colors.grey,
                     ),
                     price: '43768,6'),
-                buildDashedLine(),
+                Divider(
+                  thickness: 0.5,
+                  color: Colors.white60,
+                ),
                 ReuseAblePriceAlert(
                     image: 'bitcoin',
                     title: 'COSMOS',
@@ -175,7 +181,10 @@ class _PriceAlertState extends State<PriceAlert> {
                       color: Colors.grey,
                     ),
                     price: '43768,6'),
-                buildDashedLine(),
+                Divider(
+                  thickness: 0.5,
+                  color: Colors.white60,
+                ),
                 ReuseAblePriceAlert(
                     image: 'bitcoin',
                     title: 'Solana',

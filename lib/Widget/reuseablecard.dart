@@ -23,7 +23,7 @@ class ReuseAbleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     print('assets/Image/$image');
     return Container(
-      height: MediaQuery.of(context).size.height / 8.5,
+      height: MediaQuery.of(context).size.height / 7,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         // crossAxisAlignment: CrossAxisAlignment.center,
@@ -43,7 +43,7 @@ class ReuseAbleCard extends StatelessWidget {
                 child: getImage(context, image: image, type: IMAGE_TYPE.jpg),
               ),
               Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
                     title,
@@ -71,13 +71,13 @@ class ReuseAbleCard extends StatelessWidget {
             ],
           ),
           Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             /*  crossAxisAlignment: CrossAxisAlignment.end,*/
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(right: 8),
                 child: Text(
-                  quantity.toString(),
+                  "Qty :" + quantity.toString() + " FTM",
                   style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -85,9 +85,9 @@ class ReuseAbleCard extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(right: 8),
                 child: Text(
-                  price,
+                  " ₹" + price,
                   style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.normal,
@@ -95,9 +95,9 @@ class ReuseAbleCard extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(right: 8),
                 child: Text(
-                  totalAmount.toString(),
+                  " ₹" + totalAmount.toString(),
                   style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,

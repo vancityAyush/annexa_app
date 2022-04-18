@@ -33,7 +33,7 @@ class _AddFundState extends State<AddFund> {
               children: [
                 Container(
                   margin: EdgeInsets.only(left: 20, right: 20, top: 10),
-                  height: MediaQuery.of(context).size.height / 7,
+                  height: MediaQuery.of(context).size.height / 8,
                   width: MediaQuery.of(context).size.height / 1.5,
                   child: Card(
                       color: Color(0xff29214d),

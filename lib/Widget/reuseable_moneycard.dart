@@ -23,7 +23,7 @@ class ReuseableMoneyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(left: 20, right: 20),
-      height: MediaQuery.of(context).size.height / 9,
+      height: MediaQuery.of(context).size.height / 7,
       width: MediaQuery.of(context).size.width / 1.5,
       child: Card(
         color: Color(0xff29214d),
@@ -35,18 +35,18 @@ class ReuseableMoneyCard extends StatelessWidget {
             child: getImage(context, image: image, type: IMAGE_TYPE.jpg),
           ),
           title: Padding(
-            padding: const EdgeInsets.only(right: 50, top: 20),
+            padding: const EdgeInsets.only(right: 30, top: 30),
             child: Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.normal,
-                  fontSize: 16),
+                  fontSize: 14),
             ),
           ),
           subtitle: Text(
             date.toString().substring(0, 10),
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.normal),
@@ -56,7 +56,7 @@ class ReuseableMoneyCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 18, right: 25),
                 child: Text(
-                  price.toString(),
+                  " ₹" + price.toString(),
                   style: TextStyle(
                       color: Colors.white60,
                       fontSize: 18,

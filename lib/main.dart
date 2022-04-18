@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'Screen/loginpage.dart';
+import 'Screen/userprofile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,9 +14,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(fontFamily: "Roboto"),
-      debugShowCheckedModeBanner: true,
+      debugShowCheckedModeBanner: false,
       title: 'Sizer',
-      home: LoginPage(),
+      home: UserProfile(),
     );
   }
 }

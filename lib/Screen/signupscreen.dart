@@ -1,5 +1,7 @@
-import 'package:annexa_app/Screen/homepage.dart';
+import 'package:annexa_app/Screen/loginpage.dart';
 import 'package:annexa_app/Widget/reuseable_text.dart';
+import 'package:annexa_app/main.dart';
+import 'package:annexa_app/network/api_client.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +11,11 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  final ApiClient _apiClient = getIt.get<ApiClient>();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,22 +46,24 @@ class _SignupScreenState extends State<SignupScreen> {
                 Container(
                   margin: EdgeInsets.only(left: 16),
                   child: TextFormField(
+                      style: TextStyle(color: Colors.white),
+                      controller: _nameController,
                       decoration: const InputDecoration(
-                    hintText: 'Please Enter Full Name',
-                    hintStyle: TextStyle(
-                        color: Colors.white60,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 16),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white60),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white60),
-                    ),
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white60),
-                    ),
-                  )),
+                        hintText: 'Please Enter Full Name',
+                        hintStyle: TextStyle(
+                            color: Colors.white60,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 16),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white60),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white60),
+                        ),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white60),
+                        ),
+                      )),
                 ),
                 const Padding(
                   padding: EdgeInsets.only(top: 20, left: 10),
@@ -68,22 +77,24 @@ class _SignupScreenState extends State<SignupScreen> {
                 Container(
                   margin: EdgeInsets.only(left: 16, top: 10),
                   child: TextFormField(
+                      style: TextStyle(color: Colors.white),
+                      controller: _phoneController,
                       decoration: const InputDecoration(
-                    hintText: 'Please Enter Mobile/Phone',
-                    hintStyle: TextStyle(
-                        color: Colors.white60,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 16),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white60),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white60),
-                    ),
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white60),
-                    ),
-                  )),
+                        hintText: 'Please Enter Mobile/Phone',
+                        hintStyle: TextStyle(
+                            color: Colors.white60,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 16),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white60),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white60),
+                        ),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white60),
+                        ),
+                      )),
                 ),
                 const Padding(
                   padding: EdgeInsets.only(top: 20, left: 10),
@@ -97,22 +108,24 @@ class _SignupScreenState extends State<SignupScreen> {
                 Container(
                   margin: EdgeInsets.only(left: 15, bottom: 10),
                   child: TextFormField(
+                      style: TextStyle(color: Colors.white),
+                      controller: _emailController,
                       decoration: const InputDecoration(
-                    hintText: 'Please Enter Email',
-                    hintStyle: TextStyle(
-                        color: Colors.white60,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 16),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white60),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white60),
-                    ),
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white60),
-                    ),
-                  )),
+                        hintText: 'Please Enter Email',
+                        hintStyle: TextStyle(
+                            color: Colors.white60,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 16),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white60),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white60),
+                        ),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white60),
+                        ),
+                      )),
                 ),
                 const Padding(
                   padding: EdgeInsets.only(top: 20, left: 10),
@@ -126,22 +139,24 @@ class _SignupScreenState extends State<SignupScreen> {
                 Container(
                   margin: EdgeInsets.only(left: 15, bottom: 10),
                   child: TextFormField(
+                      style: TextStyle(color: Colors.white),
+                      controller: _passwordController,
                       decoration: const InputDecoration(
-                    hintText: 'Please Enter Password',
-                    hintStyle: TextStyle(
-                        color: Colors.white60,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 16),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white60),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white60),
-                    ),
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white60),
-                    ),
-                  )),
+                        hintText: 'Please Enter Password',
+                        hintStyle: TextStyle(
+                            color: Colors.white60,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 16),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white60),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white60),
+                        ),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white60),
+                        ),
+                      )),
                 ),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
@@ -161,10 +176,39 @@ class _SignupScreenState extends State<SignupScreen> {
                     child: MaterialButton(
                       elevation: 0,
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Homepage()));
+                        _apiClient
+                            .register(
+                                _nameController.text,
+                                _emailController.text,
+                                _passwordController.text,
+                                _phoneController.text)
+                            .then((value) {
+                          if (value.status == 200) {
+                            //nav to login
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                                value.messages,
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              backgroundColor: Colors.green,
+                            ));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginPage(),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(value.messages),
+                              ),
+                            );
+                          }
+                        });
                       },
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),

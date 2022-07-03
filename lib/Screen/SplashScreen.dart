@@ -1,5 +1,8 @@
+import 'package:annexa_app/network/api_client.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
+import '../main.dart';
 import 'loginpage.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -34,6 +37,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> startHome() async {
+    final dio = Dio();
+    getIt.registerSingleton<Dio>(dio);
+    getIt.registerSingleton<ApiClient>(ApiClient(dio));
     await Future.delayed(Duration(milliseconds: 2000));
 
     Navigator.pushReplacement(

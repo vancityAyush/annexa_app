@@ -16,7 +16,7 @@ class ReuseableMoneyCard extends StatelessWidget {
     required this.date,
     required this.result,
     required this.image,
-    /* required this.icon*/
+    /*  required this.icon*/
   }) : super(key: key);
 
   @override
@@ -31,22 +31,20 @@ class ReuseableMoneyCard extends StatelessWidget {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         child: ListTile(
           leading: Padding(
-            padding: const EdgeInsets.only(right: 20, top: 20),
+            padding: EdgeInsets.only(right: 20, top: 20),
             child: getImage(context, image: image, type: IMAGE_TYPE.jpg),
           ),
           title: Padding(
-            padding: const EdgeInsets.only(right: 30, top: 30),
+            padding: EdgeInsets.only(right: 15, top: 20),
             child: Text(
               title,
-              style: const TextStyle(
-                  color: Colors.red,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 14),
+              style: TextStyle(
+                  color: Colors.red, fontWeight: FontWeight.bold, fontSize: 18),
             ),
           ),
           subtitle: Text(
             date.toString().substring(0, 10),
-            style: const TextStyle(
+            style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.normal),
@@ -54,7 +52,7 @@ class ReuseableMoneyCard extends StatelessWidget {
           trailing: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 18, right: 25),
+                padding: EdgeInsets.only(top: 18, right: 25),
                 child: Text(
                   " ₹" + price.toString(),
                   style: TextStyle(
@@ -64,7 +62,7 @@ class ReuseableMoneyCard extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                   right: 25,
                 ),
                 child: Text(

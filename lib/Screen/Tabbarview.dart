@@ -1,21 +1,28 @@
+import 'package:annexa_app/Screen/market.dart';
+import 'package:annexa_app/Screen/searchbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Orderitems extends StatefulWidget {
+import '../Widget/back_button.dart';
+
+class TabBarMarket extends StatefulWidget {
+  const TabBarMarket({Key? key}) : super(key: key);
+
   @override
-  _OrderitemsState createState() => _OrderitemsState();
+  _TabBarMarketState createState() => _TabBarMarketState();
 }
 
-class _OrderitemsState extends State<Orderitems>
+class _TabBarMarketState extends State<TabBarMarket>
     with SingleTickerProviderStateMixin {
   final List<Widget> _tabs = [
     Center(
-      child: Text("bbcbfn"),
+      child: Text("SEARCH"),
     ),
     Center(
-      child: Text("Shubham"),
+      child: Text("MARKET"),
     )
   ];
+
   late TabController _controller;
   @override
   void initState() {
@@ -26,100 +33,42 @@ class _OrderitemsState extends State<Orderitems>
     });
   }
 
-  int _curr = 0;
-  PageController controller = PageController();
-  List demo = [
-    {
-      'img': 'assets/abc.png',
-      'title': 'Coin1',
-      'subTitle': 'subTitle1',
-    },
-    {
-      'img': 'assets/abc.png',
-      'title': 'Coin2',
-      'subTitle': 'subTitle2',
-    },
-    {
-      'img': 'assets/abc.png',
-      'title': 'Coin3',
-      'subTitle': 'subTitle3',
-    },
-    {
-      'img': 'assets/abc.png',
-      'title': 'Coin4',
-      'subTitle': 'subTitle4',
-    },
-  ];
+  @override
   Widget build(BuildContext context) {
-    List<Widget> pages = [allCoins(), watchList()];
-    return SafeArea(
-        child: Scaffold(
-      body: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              InkWell(
-                  onTap: () {
-                    setState(() {
-                      controller.animateToPage(0,
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeIn);
-                    });
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("AllCoins"),
-                  )),
-              InkWell(
-                  onTap: () {
-                    setState(() {
-                      controller.animateToPage(1,
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeIn);
-                    });
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("WatchList"),
-                  )),
+    return DefaultTabController(
+      length: 2,
+      initialIndex: 0,
+      child: Scaffold(
+        backgroundColor: Color(0xff150c3f),
+        appBar: AppBar(
+          backgroundColor: Color(0xff29214d),
+          leading: navBack(),
+          bottom: TabBar(
+            tabs: [
+              Text(
+                "SEARCH",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+              Text(
+                "Market",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
             ],
+            onTap: (index) {
+              print(index);
+            },
           ),
-          Expanded(
-            child: PageView.builder(
-              itemCount: pages.length,
-              scrollDirection: Axis.horizontal,
-              controller: controller,
-              onPageChanged: (num) {
-                setState(() {
-                  _curr = num;
-                });
-              },
-              itemBuilder: (context, index) {
-                return pages[index];
-              },
-            ),
-          ),
-        ],
+        ),
+        body: TabBarView(
+          children: [SearchBar(), Market()],
+        ),
       ),
-    ));
-  }
-
-  allCoins() {
-    return Center(
-        child: ListView.builder(
-            itemCount: demo.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Column(
-                children: [
-                  Text(demo[index]['title']),
-                  Text(demo[index]['subTitle']),
-                ],
-              );
-            }));
-  }
-
-  watchList() {
-    return Center(child: Text('data2'));
+    );
   }
 }

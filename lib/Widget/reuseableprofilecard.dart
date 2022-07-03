@@ -11,28 +11,63 @@ class ReuseableProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      height: MediaQuery.of(context).size.height / 13,
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      height: MediaQuery.of(context).size.height / 11,
       child: Card(
-          color: Color(0xff29214d),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          child: ListTile(
+        color: Color(0xff29214d),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+
+        /*ListTile(
             leading: icon,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  text,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16),
+                Padding(
+                  padding: const EdgeInsets.only(right: 30),
+                  child: Text(
+                    text,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
+                  ),
                 ),
                 icons
               ],
             ),
-          )),
+          )*/
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 5),
+                  child: icon,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 5),
+                  child: Text(
+                    text,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: icons,
+                )
+              ],
+            )
+          ],
+        ),
+      ),
     );
   }
 }

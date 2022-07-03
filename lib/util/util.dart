@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
 enum IMAGE_TYPE { png, jpg }
+
 Image getImage(BuildContext context,
     {required String image,
     IMAGE_TYPE type = IMAGE_TYPE.png,
@@ -14,3 +15,6 @@ Image getImage(BuildContext context,
     fit: BoxFit.contain,
   );
 }
+
+final emailKey = 'email';
+final passwordKey = 'password';

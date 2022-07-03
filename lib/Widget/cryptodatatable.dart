@@ -55,7 +55,7 @@ class CryptoDataTable extends StatelessWidget {
                     fontSize: 16,
                     fontWeight: FontWeight.normal)),
             Text(
-              rate.toString(),
+              "↑" + rate.toString(),
               style: TextStyle(
                   color: Colors.green,
                   fontSize: 16,
@@ -75,12 +75,12 @@ class CryptoDataTable extends StatelessWidget {
                     );*/
             },
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(5),
             ),
-            color: Color(0xffffaec8),
+            color: Color(0xfff6b6b6),
             child: Text(" -" + totalpercentage.toString() + " %",
                 style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.red,
                     fontSize: 16,
                     fontWeight: FontWeight.bold)),
           ),

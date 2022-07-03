@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../Widget/back_button.dart';
 import '../Widget/cryptodatatable.dart';
+import 'bitcoin.dart';
 
 class Crypto extends StatefulWidget {
   const Crypto({Key? key}) : super(key: key);
@@ -124,25 +125,37 @@ class _CryptoState extends State<Crypto> with SingleTickerProviderStateMixin {
                   color: Colors.white60,
                   thickness: 0.5,
                 ),
-                const CryptoDataTable(
-                  title: 'Bitcoin',
-                  totalpercentage: 11.90,
-                  subtitle: 'BTC',
-                  rate: 6.25,
-                  image: 'bitcoin',
-                  price: 1234455,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Bitcoin()));
+                  },
+                  child: const CryptoDataTable(
+                    title: 'Bitcoin',
+                    totalpercentage: 11.90,
+                    subtitle: 'BTC',
+                    rate: 6.25,
+                    image: 'bitcoin',
+                    price: 1234455,
+                  ),
                 ),
                 Divider(
                   color: Colors.white60,
                   thickness: 0.5,
                 ),
-                CryptoDataTable(
-                  title: 'Bitcoin',
-                  totalpercentage: 11.90,
-                  subtitle: 'BTC',
-                  rate: 6.25,
-                  image: 'bitcoin',
-                  price: 1234455,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Bitcoin()));
+                  },
+                  child: const CryptoDataTable(
+                    title: 'Bitcoin',
+                    totalpercentage: 11.90,
+                    subtitle: 'BTC',
+                    rate: 6.25,
+                    image: 'bitcoin',
+                    price: 1234455,
+                  ),
                 ),
                 Divider(
                   color: Colors.white60,

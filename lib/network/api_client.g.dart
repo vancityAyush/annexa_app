@@ -18,13 +18,13 @@ class _ApiClient implements ApiClient {
   String? baseUrl;
 
   @override
-  Future<ApiResponse> login(emailid, password) async {
+  Future<LoginResponse> login(emailid, password) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {'emailid': emailid, 'password': password};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ApiResponse>(Options(
+        _setStreamType<LoginResponse>(Options(
                 method: 'POST',
                 headers: _headers,
                 extra: _extra,
@@ -32,7 +32,7 @@ class _ApiClient implements ApiClient {
             .compose(_dio.options, '/login',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ApiResponse.fromJson(_result.data!);
+    final value = LoginResponse.fromJson(_result.data!);
     return value;
   }
 
@@ -58,18 +58,18 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<ApiResponse> getForexCurrency() async {
+  Future<CurrencyResponse> getForexCurrency() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ApiResponse>(
+        _setStreamType<CurrencyResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/getforex_currency',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ApiResponse.fromJson(_result.data!);
+    final value = CurrencyResponse.fromJson(_result.data!);
     return value;
   }
 

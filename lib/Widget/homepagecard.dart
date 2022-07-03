@@ -10,7 +10,7 @@ class homepagecard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height / 4.5,
+      height: MediaQuery.of(context).size.height / 5,
       width: MediaQuery.of(context).size.width / 1.1,
       child: Card(
         color: Color(0xff29214d),
@@ -29,8 +29,10 @@ class homepagecard extends StatelessWidget {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Crypto()));
                     },
-                    child: CircleAvatar(
-                      /* backgroundImage: AssetImage("assets/images/png/icon1.png"),*/
+                    child: const CircleAvatar(
+                      backgroundImage: AssetImage(
+                        "assets/images/png/newmarket.png",
+                      ),
                       backgroundColor: Color(0xff150c3f),
                       maxRadius: 35,
                     ),
@@ -40,10 +42,10 @@ class homepagecard extends StatelessWidget {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Order()));
                     },
-                    child: CircleAvatar(
-                      /* bacgroundImage: AssetImage(
-                        "assets/images/png/ordered.png",
-                      ),*/
+                    child: const CircleAvatar(
+                      backgroundImage: AssetImage(
+                        "assets/images/png/neworder.png",
+                      ),
                       backgroundColor: Color(0xff150c3f),
                       maxRadius: 35,
                     ),
@@ -57,7 +59,8 @@ class homepagecard extends StatelessWidget {
                     },
                     child: CircleAvatar(
                       backgroundColor: Color(0xff150c3f),
-                      /*backgroundImage: AssetImage('assets/images/png/market.png'),*/
+                      backgroundImage:
+                          AssetImage('assets/images/png/newprice.png'),
                       maxRadius: 35,
                     ),
                   )

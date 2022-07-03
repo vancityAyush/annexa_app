@@ -1,4 +1,6 @@
-import 'package:annexa_app/models/response.dart';
+import 'package:annexa_app/network/response/currency_response.dart';
+import 'package:annexa_app/network/response/login_response.dart';
+import 'package:annexa_app/network/response/response.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -10,14 +12,15 @@ abstract class ApiClient {
 
   @POST("/login")
   @FormUrlEncoded()
-  Future<ApiResponse> login(@Field() String emailid, @Field() String password);
+  Future<LoginResponse> login(
+      @Field() String emailid, @Field() String password);
 
   @POST("/savecustomer")
   Future<ApiResponse> register(@Field() String name, @Field() String emailid,
       @Field() String password, @Field('mobile') String phone);
 
   @GET("/getforex_currency")
-  Future<ApiResponse> getForexCurrency();
+  Future<CurrencyResponse> getForexCurrency();
   @GET("/ratefluctute")
   Future<ApiResponse> getRateFluctute();
 

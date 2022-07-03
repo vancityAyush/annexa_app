@@ -36,20 +36,26 @@ class _PriceAlertState extends State<PriceAlert> {
                     height: MediaQuery.of(context).size.height / 17,
                     margin: const EdgeInsets.only(top: 40, left: 15, right: 15),
                     decoration: BoxDecoration(
-                      color: Color(0xff29114d),
+                      color: Color(0xff29214d),
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Icon(Icons.currency_bitcoin),
-                        ),
+                            padding: EdgeInsets.all(8.0),
+                            child: Image.asset(
+                              "assets/images/jpg/coin.jpg",
+                              height: 50,
+                              width: 50,
+                            )),
                         Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Icon(Icons.currency_bitcoin),
-                        ),
+                            padding: EdgeInsets.all(8.0),
+                            child: Image.asset(
+                              "assets/images/png/arrow.png",
+                              height: 50,
+                              width: 50,
+                            )),
                       ],
                     )),
                 Container(
@@ -57,7 +63,7 @@ class _PriceAlertState extends State<PriceAlert> {
                   height: MediaQuery.of(context).size.height / 17,
                   margin: const EdgeInsets.only(top: 40, left: 15, right: 15),
                   decoration: BoxDecoration(
-                    color: Color(0xff29114d),
+                    color: Color(0xff29214d),
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: const Padding(
@@ -66,8 +72,8 @@ class _PriceAlertState extends State<PriceAlert> {
                       "Enter Price",
                       style: TextStyle(
                           color: Colors.grey,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 14),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
                     ),
                   ),
                 ),
@@ -83,8 +89,8 @@ class _PriceAlertState extends State<PriceAlert> {
                 ),
                 Container(
                     width: MediaQuery.of(context).size.width / 1.0,
-                    height: MediaQuery.of(context).size.height / 20,
-                    margin: const EdgeInsets.only(top: 40, left: 15, right: 15),
+                    height: MediaQuery.of(context).size.height / 15,
+                    margin: const EdgeInsets.only(top: 5, left: 15, right: 15),
                     decoration: BoxDecoration(
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(10),
@@ -102,20 +108,20 @@ class _PriceAlertState extends State<PriceAlert> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: EdgeInsets.all(12.0),
+                      padding: EdgeInsets.only(left: 15, top: 10),
                       child: ReuseableText(
                           text: "Coin Name",
                           size: 14,
-                          fontWeight: FontWeight.normal,
+                          fontWeight: FontWeight.bold,
                           color: Colors.white70,
                           wordSpacing: 0),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(12.0),
+                      padding: EdgeInsets.only(right: 15, top: 10),
                       child: ReuseableText(
                           text: "ALERT PRICE",
                           size: 14,
-                          fontWeight: FontWeight.normal,
+                          fontWeight: FontWeight.bold,
                           color: Colors.white70,
                           wordSpacing: 0),
                     ),
@@ -142,7 +148,7 @@ class _PriceAlertState extends State<PriceAlert> {
                 ),
                 Divider(
                   color: Colors.white,
-                  thickness: 2,
+                  thickness: .5,
                   endIndent: 15,
                   indent: 20,
                 ),
@@ -152,12 +158,14 @@ class _PriceAlertState extends State<PriceAlert> {
                     icon: Icon(
                       Icons.delete,
                       size: 30,
-                      color: Colors.grey,
+                      color: Colors.white60,
                     ),
                     price: '43768,6'),
                 Divider(
-                  thickness: 0.5,
-                  color: Colors.white60,
+                  color: Colors.white,
+                  thickness: 1.5,
+                  endIndent: 15,
+                  indent: 20,
                 ),
                 ReuseAblePriceAlert(
                     image: 'bitcoin',
@@ -165,25 +173,29 @@ class _PriceAlertState extends State<PriceAlert> {
                     icon: Icon(
                       Icons.delete,
                       size: 30,
-                      color: Colors.grey,
+                      color: Colors.white60,
                     ),
                     price: '43768,6'),
-                Divider(
-                  thickness: 0.5,
-                  color: Colors.white60,
+                const Divider(
+                  color: Colors.white,
+                  thickness: .5,
+                  endIndent: 15,
+                  indent: 20,
                 ),
                 ReuseAblePriceAlert(
                     image: 'bitcoin',
                     title: 'COSMOS',
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.delete,
                       size: 30,
-                      color: Colors.grey,
+                      color: Colors.white60,
                     ),
                     price: '43768,6'),
                 Divider(
-                  thickness: 0.5,
-                  color: Colors.white60,
+                  color: Colors.white,
+                  thickness: .5,
+                  endIndent: 15,
+                  indent: 20,
                 ),
                 ReuseAblePriceAlert(
                     image: 'bitcoin',
@@ -191,7 +203,7 @@ class _PriceAlertState extends State<PriceAlert> {
                     icon: Icon(
                       Icons.delete,
                       size: 30,
-                      color: Colors.grey,
+                      color: Colors.white60,
                     ),
                     price: '43768,6'),
               ],

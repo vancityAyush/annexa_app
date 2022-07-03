@@ -17,7 +17,7 @@ class TopGainers extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         margin: EdgeInsets.symmetric(vertical: 20.0),
-        height: 160.0,
+        height: MediaQuery.of(context).size.height / 4.5,
         child: ListView.builder(
           itemCount: 5,
           scrollDirection: Axis.horizontal,
@@ -43,7 +43,7 @@ class TopGainers extends StatelessWidget {
                       style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 14),
+                          fontSize: 19),
                     ),
                   ),
                   Padding(

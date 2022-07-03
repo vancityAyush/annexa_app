@@ -1,7 +1,8 @@
-import 'package:annexa_app/Screen/homepage.dart';
+import 'package:annexa_app/Screen/mainpage.dart';
 import 'package:annexa_app/Screen/signupscreen.dart';
 import 'package:annexa_app/Widget/reuseable_text.dart';
 import 'package:annexa_app/main.dart';
+import 'package:annexa_app/models/OAuthUser.dart';
 import 'package:annexa_app/network/api_client.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   final ApiClient _apiClient = getIt.get<ApiClient>();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,15 +121,27 @@ class _LoginPageState extends State<LoginPage> {
                   child: MaterialButton(
                     elevation: 0,
                     onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Login Successfully'),
+                        backgroundColor: Colors.green,
+                      ));
                       _apiClient
                           .login(
                               _emailController.text, _passwordController.text)
                           .then((value) {
                         if (value.status == 200) {
+                          User user = User(
+                              id: value.data.id,
+                              name: value.data.name,
+                              email: value.data.emailid,
+                              password: value.data.password,
+                              phone: value.data.mobileno,
+                              wallet_balance: value.Wallet_Balance);
+                          getIt.registerSingleton<User>(user);
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Homepage(),
+                              builder: (context) => MainPage(),
                             ),
                           );
                         } else {

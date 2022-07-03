@@ -1,4 +1,4 @@
-import 'package:annexa_app/Screen/SplashScreen.dart';
+import 'package:annexa_app/Screen/mainpage.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(fontFamily: "Roboto"),
       debugShowCheckedModeBanner: false,
       title: 'Annexa App',
-      home: SplashScreen(),
+      home: MainPage(),
     );
   }
 }

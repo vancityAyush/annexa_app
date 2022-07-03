@@ -55,7 +55,7 @@ class _HistoryState extends State<History> with SingleTickerProviderStateMixin {
                       Tab(text: ('Closed'))
                     ]),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(15.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -76,7 +76,7 @@ class _HistoryState extends State<History> with SingleTickerProviderStateMixin {
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 10),
-                  height: MediaQuery.of(context).size.height / 4.2,
+                  height: MediaQuery.of(context).size.height / 5.5,
                   width: MediaQuery.of(context).size.width / 1,
                   child: Card(
                     color: Color(0xff29214d),
@@ -186,7 +186,7 @@ class _HistoryState extends State<History> with SingleTickerProviderStateMixin {
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 10),
-                  height: MediaQuery.of(context).size.height / 4.2,
+                  height: MediaQuery.of(context).size.height / 5.5,
                   width: MediaQuery.of(context).size.width / 1,
                   child: Card(
                     color: Color(0xff29214d),

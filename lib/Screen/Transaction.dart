@@ -1,9 +1,14 @@
 import 'package:annexa_app/Widget/back_button.dart';
 import 'package:annexa_app/Widget/reuseable_text.dart';
+import 'package:annexa_app/Widget/transaction_reuseable_widget.dart';
+import 'package:annexa_app/main.dart';
+import 'package:annexa_app/models/order_data.dart';
+import 'package:annexa_app/network/api_client.dart';
+import 'package:annexa_app/network/response/order_history_response.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 
-import '../Widget/transaction_reuseable_widget.dart';
+import '../models/OAuthUser.dart';
 
 class Transaction extends StatefulWidget {
   @override
@@ -17,17 +22,8 @@ class _TransactionState extends State<Transaction> {
     'Native Android': 40609,
     'ioS': 42544
   };
-  // @override
-  // void initState() {
-  //   data.addAll({
-  //     'Flutter': 37136,
-  //     'React Native': 69687,
-  //     'Native Android': 40609,
-  //     'ioS': 42544
-  //   });
-  //   super.initState();
-  // }
-
+  final apiClient = getIt<ApiClient>();
+  final _user = getIt<User>();
   List<Color> _colors = [
     Colors.teal,
     Colors.blueAccent,
@@ -77,7 +73,7 @@ class _TransactionState extends State<Transaction> {
                                   color: Colors.white,
                                 ),
                                 ReuseableText(
-                                    text: '₹ 1300.00',
+                                    text: '₹ ${_user.wallet_balance}',
                                     size: 16,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
@@ -181,93 +177,28 @@ class _TransactionState extends State<Transaction> {
             color: Colors.white60,
             thickness: 0.5,
           ),
-          TransactionWidget(
-            holdingrate: '0.5BTC',
-            title: 'BITCOIN',
-            subtitle: 'BTC',
-            holdingprice: 35466.56,
-            rate: '6.75',
-            image: 'bitcoin',
-            mainprice: 35904.00,
-          ),
-          Divider(
-            thickness: 0.5,
-            color: Colors.white60,
-          ),
-          TransactionWidget(
-            holdingrate: '0.5BTC',
-            title: 'BITCOIN',
-            subtitle: 'BTC',
-            holdingprice: 35466.56,
-            rate: '6.75',
-            image: 'bitcoin',
-            mainprice: 35904.00,
-          ),
-          Divider(
-            thickness: 0.5,
-            color: Colors.white60,
-          ),
-          TransactionWidget(
-            holdingrate: '0.5BTC',
-            title: 'BITCOIN',
-            subtitle: 'BTC',
-            holdingprice: 35466.56,
-            rate: '6.75',
-            image: 'bitcoin',
-            mainprice: 35904.00,
-          ),
-          Divider(
-            thickness: 0.5,
-            color: Colors.white60,
-          ),
-          TransactionWidget(
-            holdingrate: '0.5BTC',
-            title: 'BITCOIN',
-            subtitle: 'BTC',
-            holdingprice: 35466.56,
-            rate: '6.75',
-            image: 'bitcoin',
-            mainprice: 35904.00,
-          ),
-          Divider(
-            thickness: 0.5,
-            color: Colors.white60,
-          ),
-          TransactionWidget(
-            holdingrate: '0.5BTC',
-            title: 'BITCOIN',
-            subtitle: 'BTC',
-            holdingprice: 35466.56,
-            rate: '6.75',
-            image: 'bitcoin',
-            mainprice: 35904.00,
-          ),
-          Divider(
-            thickness: 0.5,
-            color: Colors.white60,
-          ),
-          TransactionWidget(
-            holdingrate: '0.5BTC',
-            title: 'BITCOIN',
-            subtitle: 'BTC',
-            holdingprice: 35466.56,
-            rate: '6.75',
-            image: 'bitcoin',
-            mainprice: 35904.00,
-          ),
-          Divider(
-            thickness: 0.5,
-            color: Colors.white60,
-          ),
-          TransactionWidget(
-            holdingrate: '0.5BTC',
-            title: 'BITCOIN',
-            subtitle: 'BTC',
-            holdingprice: 35466.56,
-            rate: '6.75',
-            image: 'bitcoin',
-            mainprice: 35904.00,
-          ),
+          FutureBuilder<OrderHistoryResponse>(
+            future: apiClient.getOrderHistory(_user.id),
+            builder: (BuildContext context,
+                AsyncSnapshot<OrderHistoryResponse> snapshot) {
+              if (snapshot.hasData) {
+                List<OrderData> orderData = snapshot.data!.data;
+                return ListView.separated(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) =>
+                        TransactionWidget(data: orderData[index]),
+                    separatorBuilder: (_, __) => Divider(
+                          color: Colors.white60,
+                          thickness: 0.5,
+                        ),
+                    itemCount: orderData.length);
+              } else
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+            },
+          )
         ],
       ),
     );

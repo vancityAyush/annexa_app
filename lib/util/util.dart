@@ -17,10 +17,42 @@ Image getImage(BuildContext context,
   );
 }
 
+Widget getAssetImage(BuildContext context,
+    {required String base, required String main, double radius = 50}) {
+  return CircleAvatar(
+    backgroundColor: Colors.transparent,
+    radius: radius,
+    child: Stack(
+      children: [
+        Align(
+          alignment: Alignment.topLeft,
+          child: Image.network(
+            base,
+            height: radius + 5,
+            width: radius + 5,
+            fit: BoxFit.contain,
+          ),
+        ),
+        Align(
+          alignment: Alignment.bottomRight,
+          child: Image.network(
+            main,
+            height: radius + 5,
+            width: radius + 5,
+            fit: BoxFit.contain,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 final emailKey = 'email';
 final passwordKey = 'password';
 final apiKey = "kVTw4WmEJON8jyV0vczS86FEpTu1Dq3d";
 final DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+
+DateFormat trDateFormat = DateFormat('EEE, MMM d, yyyy');
 
 enum timeSpan { minute, hour, day, week, month, year }
 

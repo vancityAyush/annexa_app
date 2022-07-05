@@ -4,6 +4,7 @@ import 'package:annexa_app/Widget/reuseable_text.dart';
 import 'package:annexa_app/main.dart';
 import 'package:annexa_app/models/OAuthUser.dart';
 import 'package:annexa_app/network/api_client.dart';
+import 'package:annexa_app/network/response/wallet_response.dart';
 import 'package:flutter/material.dart';
 
 import '../Widget/reuseableprofilecard.dart';
@@ -79,13 +80,21 @@ class _UserProfileState extends State<UserProfile> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 18),
-                          child: Text(
-                            '\u{20B9}${_user.wallet_balance ?? 0.0}',
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          ),
+                          child: FutureBuilder<WalletResponse>(
+                              future: apiClient.getWallet(_user.id),
+                              builder: (context, snapshots) {
+                                if (snapshots.hasData) {
+                                  _user.wallet_balance =
+                                      snapshots.data?.Wallet_Balance;
+                                }
+                                return Text(
+                                  '\u{20B9}${_user.wallet_balance ?? 0.0}',
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                );
+                              }),
                         ),
                       ],
                     ),

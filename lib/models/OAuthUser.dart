@@ -6,7 +6,7 @@ class User {
   final String email;
   final String password;
   final String phone;
-  final String? wallet_balance;
+  String? wallet_balance;
 
   final storage = FlutterSecureStorage();
   final emailKey = 'email';

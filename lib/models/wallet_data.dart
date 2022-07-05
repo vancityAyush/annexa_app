@@ -1,3 +1,4 @@
+import 'package:annexa_app/util/util.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'wallet_data.g.dart';
@@ -12,7 +13,14 @@ class WalletData {
   final String balance;
   final String? stock_id;
   final String? exchange;
+  final String? createdon;
 
+  String get date {
+    DateTime date = DateTime.parse(createdon!);
+    return trDateFormat.format(date);
+  }
+
+  String get transactionType => type == 'Dr' ? 'Debit' : 'Credit';
   WalletData({
     required this.id,
     required this.customerid,
@@ -21,6 +29,7 @@ class WalletData {
     required this.balance,
     required this.stock_id,
     required this.exchange,
+    required this.createdon,
   });
 
   /// Connect the generated [_$PersonFromJson] function to the `fromJson`

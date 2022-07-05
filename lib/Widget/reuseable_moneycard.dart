@@ -1,23 +1,12 @@
+import 'package:annexa_app/models/wallet_data.dart';
 import 'package:flutter/material.dart';
 
-import '../util/util.dart';
-
 class ReuseableMoneyCard extends StatelessWidget {
-  final String image;
-  final String title;
-  final DateTime date;
-  final double price;
-  final String result;
-  /*final Widget icon;*/
+  WalletData data;
+
   ReuseableMoneyCard({
-    Key? key,
-    required this.title,
-    required this.price,
-    required this.date,
-    required this.result,
-    required this.image,
-    /*  required this.icon*/
-  }) : super(key: key);
+    required this.data,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,20 +19,19 @@ class ReuseableMoneyCard extends StatelessWidget {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         child: ListTile(
-          leading: Padding(
-            padding: EdgeInsets.only(right: 20, top: 20),
-            child: getImage(context, image: image, type: IMAGE_TYPE.jpg),
-          ),
           title: Padding(
             padding: EdgeInsets.only(right: 15, top: 20),
             child: Text(
-              title,
+              data.amount,
               style: TextStyle(
-                  color: Colors.red, fontWeight: FontWeight.bold, fontSize: 18),
+                color: data.type == "Dr" ? Colors.red : Colors.green,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
             ),
           ),
           subtitle: Text(
-            date.toString().substring(0, 10),
+            data.date,
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,
@@ -54,7 +42,7 @@ class ReuseableMoneyCard extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(top: 18, right: 25),
                 child: Text(
-                  " ₹" + price.toString(),
+                  "₹ " + data.balance,
                   style: TextStyle(
                       color: Colors.white60,
                       fontSize: 18,
@@ -66,11 +54,11 @@ class ReuseableMoneyCard extends StatelessWidget {
                   right: 25,
                 ),
                 child: Text(
-                  result,
+                  data.transactionType,
                   style: TextStyle(
-                      color: Colors.lightGreenAccent,
+                      color: data.type == "Dr" ? Colors.red : Colors.green,
                       fontWeight: FontWeight.normal,
-                      fontSize: 10),
+                      fontSize: 14),
                 ),
               ),
             ],

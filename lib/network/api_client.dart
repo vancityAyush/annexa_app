@@ -1,5 +1,6 @@
 import 'package:annexa_app/network/response/currency_response.dart';
 import 'package:annexa_app/network/response/login_response.dart';
+import 'package:annexa_app/network/response/order_history_response.dart';
 import 'package:annexa_app/network/response/rate_response.dart';
 import 'package:annexa_app/network/response/response.dart';
 import 'package:annexa_app/network/response/wallet_response.dart';
@@ -37,7 +38,7 @@ abstract class ApiClient {
     @Field() String bid_time,
   );
 
-  @POST("https://annexa.frantic.in/Api/save_payment")
+  @POST("https://annexa.frantic.in/Api/savepayment")
   @FormUrlEncoded()
   Future<ApiResponse> savePayment(
     @Field() String customerid,
@@ -47,6 +48,10 @@ abstract class ApiClient {
     @Field() String status,
   );
 
-  @POST('/getwallet')
+  @GET('/getwallet')
   Future<WalletResponse> getWallet(@Query('customerid') String customerid);
+
+  @GET('/getorder_history')
+  Future<OrderHistoryResponse> getOrderHistory(
+      @Query('customerid') String customerid);
 }

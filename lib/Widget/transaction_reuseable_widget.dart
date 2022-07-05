@@ -1,24 +1,15 @@
+import 'package:annexa_app/models/order_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../util/util.dart';
 
 class TransactionWidget extends StatelessWidget {
-  final String image;
-  final String title;
-  final String subtitle;
-  final double mainprice;
-  final String rate;
-  final double holdingprice;
-  final String holdingrate;
-  TransactionWidget(
-      {required this.image,
-      required this.title,
-      required this.subtitle,
-      required this.mainprice,
-      required this.rate,
-      required this.holdingprice,
-      required this.holdingrate});
+  final OrderData data;
+
+  TransactionWidget({
+    required this.data,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,19 +21,20 @@ class TransactionWidget extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: getImage(context, image: image, type: IMAGE_TYPE.jpg),
+                child: getAssetImage(context,
+                    base: data.baseImg, main: data.mainImg, radius: 25),
               ),
               Column(
                 children: [
                   Text(
-                    title,
+                    data.ticker,
                     style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 16),
                   ),
                   Text(
-                    subtitle,
+                    data.traid_time,
                     style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.normal,
@@ -60,14 +52,14 @@ class TransactionWidget extends StatelessWidget {
             Column(
               children: [
                 Text(
-                  " ₹" + mainprice.toString(),
+                  " ₹" + data.amount,
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.normal,
                       fontSize: 18),
                 ),
                 Text(
-                  " ↑" + rate,
+                  " ↑" + data.profit_perc + "%",
                   style: TextStyle(
                       color: Colors.green,
                       fontWeight: FontWeight.bold,
@@ -85,7 +77,7 @@ class TransactionWidget extends StatelessWidget {
           Column(
             children: [
               Text(
-                " ₹" + holdingprice.toString(),
+                " ₹ ${data.profit}",
                 style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.normal,
@@ -95,9 +87,9 @@ class TransactionWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    holdingrate,
+                    data.orderType,
                     style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.yellow,
                         fontWeight: FontWeight.normal,
                         fontSize: 16),
                   ),

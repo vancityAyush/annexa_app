@@ -14,6 +14,7 @@ WalletData _$WalletDataFromJson(Map<String, dynamic> json) => WalletData(
       balance: json['balance'] as String,
       stock_id: json['stock_id'] as String?,
       exchange: json['exchange'] as String?,
+      createdon: json['createdon'] as String?,
     );
 
 Map<String, dynamic> _$WalletDataToJson(WalletData instance) =>
@@ -25,4 +26,5 @@ Map<String, dynamic> _$WalletDataToJson(WalletData instance) =>
       'balance': instance.balance,
       'stock_id': instance.stock_id,
       'exchange': instance.exchange,
+      'createdon': instance.createdon,
     };

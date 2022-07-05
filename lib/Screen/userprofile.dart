@@ -1,6 +1,9 @@
 import 'package:annexa_app/Screen/Transaction.dart';
 import 'package:annexa_app/Screen/withdrawal.dart';
 import 'package:annexa_app/Widget/reuseable_text.dart';
+import 'package:annexa_app/main.dart';
+import 'package:annexa_app/models/OAuthUser.dart';
+import 'package:annexa_app/network/api_client.dart';
 import 'package:flutter/material.dart';
 
 import '../Widget/reuseableprofilecard.dart';
@@ -16,6 +19,8 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+  final _user = getIt<User>();
+  final apiClient = getIt<ApiClient>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,16 +30,16 @@ class _UserProfileState extends State<UserProfile> {
           backgroundColor: Color(0xff29214d),
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text(
-                "Yash Mahrotra",
+                _user.name,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 25,
                     fontWeight: FontWeight.bold),
               ),
               Text(
-                "Meh*****.yash24@gmail.com",
+                _user.email,
                 style: TextStyle(
                     color: Colors.white60,
                     fontSize: 16,
@@ -62,8 +67,8 @@ class _UserProfileState extends State<UserProfile> {
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Padding(
+                      children: [
+                        const Padding(
                           padding: EdgeInsets.only(left: 10, top: 25),
                           child: ReuseableText(
                               text: "Available to Invest",
@@ -73,10 +78,10 @@ class _UserProfileState extends State<UserProfile> {
                               wordSpacing: 0),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: 18),
+                          padding: const EdgeInsets.only(left: 18),
                           child: Text(
-                            '\u{20B9}${0.08}',
-                            style: TextStyle(
+                            '\u{20B9}${_user.wallet_balance ?? 0.0}',
+                            style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16),

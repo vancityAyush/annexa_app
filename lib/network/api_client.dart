@@ -1,6 +1,8 @@
 import 'package:annexa_app/network/response/currency_response.dart';
 import 'package:annexa_app/network/response/login_response.dart';
+import 'package:annexa_app/network/response/rate_response.dart';
 import 'package:annexa_app/network/response/response.dart';
+import 'package:annexa_app/network/response/wallet_response.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -22,9 +24,9 @@ abstract class ApiClient {
   @GET("/getforex_currency")
   Future<CurrencyResponse> getForexCurrency();
   @GET("/ratefluctute")
-  Future<ApiResponse> getRateFluctute();
+  Future<RateResponse> getRateFluctute();
 
-  @POST("/save_order")
+  @POST("https://annexa.frantic.in/Api/save_order")
   @FormUrlEncoded()
   Future<ApiResponse> saveOrder(
     @Field() String customerid,
@@ -35,7 +37,7 @@ abstract class ApiClient {
     @Field() String bid_time,
   );
 
-  @POST("/save_payment")
+  @POST("https://annexa.frantic.in/Api/save_payment")
   @FormUrlEncoded()
   Future<ApiResponse> savePayment(
     @Field() String customerid,
@@ -44,4 +46,7 @@ abstract class ApiClient {
     @Field() String refrence_id,
     @Field() String status,
   );
+
+  @POST('/getwallet')
+  Future<WalletResponse> getWallet(@Query('customerid') String customerid);
 }

@@ -16,6 +16,7 @@ class CurrencyData {
   String get baseImg => "https://annexa.frantic.in/$base_imgurl";
   String get mainImg => "https://annexa.frantic.in/$main_imgurl";
 
+  String get text => mian_currency + "/" + base_currency;
   CurrencyData({
     required this.id,
     required this.base_currency,

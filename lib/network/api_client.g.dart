@@ -74,18 +74,18 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<ApiResponse> getRateFluctute() async {
+  Future<RateResponse> getRateFluctute() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ApiResponse>(
+        _setStreamType<RateResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/ratefluctute',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ApiResponse.fromJson(_result.data!);
+    final value = RateResponse.fromJson(_result.data!);
     return value;
   }
 
@@ -109,7 +109,7 @@ class _ApiClient implements ApiClient {
                 headers: _headers,
                 extra: _extra,
                 contentType: 'application/x-www-form-urlencoded')
-            .compose(_dio.options, '/save_order',
+            .compose(_dio.options, 'https://annexa.frantic.in/Api/save_order',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ApiResponse.fromJson(_result.data!);
@@ -135,10 +135,26 @@ class _ApiClient implements ApiClient {
                 headers: _headers,
                 extra: _extra,
                 contentType: 'application/x-www-form-urlencoded')
-            .compose(_dio.options, '/save_payment',
+            .compose(_dio.options, 'https://annexa.frantic.in/Api/save_payment',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ApiResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<WalletResponse> getWallet(customerid) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'customerid': customerid};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<WalletResponse>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/getwallet',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = WalletResponse.fromJson(_result.data!);
     return value;
   }
 

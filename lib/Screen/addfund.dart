@@ -1,4 +1,7 @@
 import 'package:annexa_app/Widget/reuseable_text.dart';
+import 'package:annexa_app/main.dart';
+import 'package:annexa_app/models/OAuthUser.dart';
+import 'package:annexa_app/network/api_client.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +15,8 @@ class AddFund extends StatefulWidget {
 }
 
 class _AddFundState extends State<AddFund> {
+  final _user = getIt<User>();
+  final apiClient = getIt<ApiClient>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +56,7 @@ class _AddFundState extends State<AddFund> {
                             Padding(
                               padding: EdgeInsets.only(right: 50),
                               child: Text(
-                                '\u{20B9}${0.02}',
+                                '\u{20B9}${_user.wallet_balance ?? 0.0}',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,

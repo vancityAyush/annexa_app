@@ -23,7 +23,7 @@ class _AddFundState extends State<AddFund> {
       backgroundColor: Color(0xff150c3f),
       appBar: AppBar(
         leading: navBack(),
-        backgroundColor: Color(0xff29214d),
+        backgroundColor: const Color(0xff29214d),
         title: Text("Indian Rupee"),
       ),
       body: ListView(

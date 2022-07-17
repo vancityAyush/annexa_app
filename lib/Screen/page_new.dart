@@ -1,6 +1,5 @@
 import 'package:annexa_app/Widget/homepagecard.dart';
 import 'package:annexa_app/Widget/reuseable_text.dart';
-import 'package:annexa_app/Widget/top_gainers.dart';
 import 'package:flutter/material.dart';
 
 class PageNew extends StatelessWidget {
@@ -65,22 +64,22 @@ class PageNew extends StatelessWidget {
                     fontSize: 14),
               ),
             ),
-            const TopGainers(
-                percentage: '6.92.',
-                name: 'Bitcoin',
-                price: '24656.6',
-                icon: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                )),
-            const TopGainers(
-                percentage: '6.92.',
-                name: 'Bitcoin',
-                price: '24656.6',
-                icon: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                )),
+            // const TopGainers(
+            //     percentage: '6.92.',
+            //     name: 'Bitcoin',
+            //     price: '24656.6',
+            //     icon: Icon(
+            //       Icons.add,
+            //       color: Colors.white,
+            //     )),
+            // const TopGainers(
+            //     percentage: '6.92.',
+            //     name: 'Bitcoin',
+            //     price: '24656.6',
+            //     icon: Icon(
+            //       Icons.add,
+            //       color: Colors.white,
+            //     )),
             Container(
               width: MediaQuery.of(context).size.width * 2,
               child: const ReuseableText(

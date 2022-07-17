@@ -90,7 +90,7 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<ApiResponse> saveOrder(
+  Future<SaveOrderResponse> saveOrder(
       customerid, amount, stock_id, type, bid_price, bid_time) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -104,7 +104,7 @@ class _ApiClient implements ApiClient {
       'bid_time': bid_time
     };
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ApiResponse>(Options(
+        _setStreamType<SaveOrderResponse>(Options(
                 method: 'POST',
                 headers: _headers,
                 extra: _extra,
@@ -112,7 +112,7 @@ class _ApiClient implements ApiClient {
             .compose(_dio.options, 'https://annexa.frantic.in/Api/save_order',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ApiResponse.fromJson(_result.data!);
+    final value = SaveOrderResponse.fromJson(_result.data!);
     return value;
   }
 
@@ -171,6 +171,59 @@ class _ApiClient implements ApiClient {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = OrderHistoryResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ApiResponse> getOrderDetails(orderid) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'orderid': orderid};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ApiResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(
+                    _dio.options, 'https://annexa.frantic.in/Api/orderdetails',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ApiResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<List<CryptoEntity>> getCryptoData() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<CryptoEntity>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(
+                    _dio.options, 'https://api.wazirx.com/sapi/v1/tickers/24hr',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) => CryptoEntity.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<CryptoEntity> getCrypto(symbol) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'symbol': symbol};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<CryptoEntity>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(
+                    _dio.options, 'https://api.wazirx.com/sapi/v1/ticker/24hr',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = CryptoEntity.fromJson(_result.data!);
     return value;
   }
 

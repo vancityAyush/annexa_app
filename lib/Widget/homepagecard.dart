@@ -5,7 +5,9 @@ import '../Screen/crypto.dart';
 import '../Screen/pricealert.dart';
 
 class homepagecard extends StatelessWidget {
-  const homepagecard({Key? key}) : super(key: key);
+  const homepagecard({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

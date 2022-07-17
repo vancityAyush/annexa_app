@@ -1,8 +1,11 @@
+import 'package:annexa_app/Screen/mainpage.dart';
 import 'package:annexa_app/main.dart';
 import 'package:annexa_app/network/api_client.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../models/OAuthUser.dart';
 import 'loginpage.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -37,12 +40,25 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> startHome() async {
-    Dio dio = Dio();
+    Dio dio = Dio(
+      BaseOptions(
+        connectTimeout: 5000,
+        receiveTimeout: 5000,
+      ),
+    );
+
+    final flutterStorage = FlutterSecureStorage();
     getIt.registerLazySingleton<Dio>(() => dio);
     getIt.registerSingleton<ApiClient>(ApiClient(dio));
-    await Future.delayed(Duration(milliseconds: 2000));
+    getIt.registerSingleton<FlutterSecureStorage>(flutterStorage);
 
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (Context) => LoginPage()));
+    if (await User.loginCheck()) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => MainPage()));
+    } else {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
+    }
+    await Future.delayed(Duration(milliseconds: 2000));
   }
 }

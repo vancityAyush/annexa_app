@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:annexa_app/Widget/graph_widget_list.dart';
 import 'package:annexa_app/Widget/reuseable_text.dart';
 import 'package:annexa_app/main.dart';
@@ -8,11 +10,13 @@ import 'package:annexa_app/network/response/currency_response.dart';
 import 'package:annexa_app/network/response/polygon_response.dart';
 import 'package:annexa_app/network/response/rate_response.dart';
 import 'package:annexa_app/network/response/response.dart';
+import 'package:annexa_app/network/response/save_order_response.dart';
 import 'package:annexa_app/util/util.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_switch/flutter_switch.dart';
+import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class TradingHomepage extends StatefulWidget {
   const TradingHomepage({Key? key}) : super(key: key);
@@ -26,13 +30,15 @@ class _TradingHomepageState extends State<TradingHomepage> {
   List<CurrencyData> items = [];
   List<GraphPoint> list = [];
   double currentPrice = 0.0;
-  List<String> timeFrame = ["1h", "1d", "1w", "1m", "1y"];
-  String currentTimeFrame = "1h";
-
+  List<int> timeFrame = [5, 10, 15, 30, 60];
+  int currentTimeFrame = 5;
+  int currentTimeIndex = 0;
   final _user = getIt<User>();
   final _apiClient = getIt<ApiClient>();
   final dio = getIt<Dio>();
-  bool status1 = false;
+  int bid_time = 3;
+  TextEditingController amount = TextEditingController(text: "20");
+  OrderData? currentOrder;
 
   Future<void> getCurrentPrice() async {
     RateResponse res = await _apiClient.getRateFluctute();
@@ -40,69 +46,46 @@ class _TradingHomepageState extends State<TradingHomepage> {
     currentPrice = double.parse(s);
   }
 
-  Future<dynamic> getPolygonData(String ticker, timeSpan span) async {
+  Future<dynamic> getPolygonData(String ticker, int range) async {
     final now = DateTime.now();
     Duration duration;
-    switch (span) {
-      case timeSpan.minute:
-        duration = const Duration(days: 1);
-        break;
-      case timeSpan.hour:
-        duration = const Duration(days: 1);
-        break;
-      case timeSpan.day:
-        duration = const Duration(days: 7);
-        break;
-      case timeSpan.week:
-        duration = const Duration(days: 30);
-        break;
-      case timeSpan.month:
-        duration = const Duration(days: 365);
-        break;
-      case timeSpan.year:
-        duration = const Duration(days: 365);
-        break;
-    }
-
-    String from = dateFormat.format(now.subtract(duration));
+    String from = dateFormat.format(now.subtract(Duration(days: 1)));
     String to = dateFormat.format(now);
     String url =
-        "https://api.polygon.io/v2/aggs/ticker/$ticker/range/1/${timeSpanMap[span]}/$from/$to?adjusted=true&sort=asc&limit=300&apiKey=$apiKey";
+        "https://api.polygon.io/v2/aggs/ticker/$ticker/range/$range/minute/$from/$to?adjusted=true&sort=asc&limit=999999999&apiKey=$apiKey";
 
     Response res = await dio.get(url);
     return res.data;
   }
 
-  void startStream() {}
+  Stream<List<GraphPoint>> dataStream() async* {
+    while (true) {
+      await getCurrentPrice();
+      await Future.delayed(Duration(minutes: currentTimeFrame));
+      list.removeAt(0);
+      list[currentTimeIndex].value = currentPrice;
+      currentTimeIndex++;
+      yield list;
+    }
+  }
 
   Future<void> fetchData() async {
     CurrencyResponse cr = await _apiClient.getForexCurrency();
     items = cr.data;
     await getCurrentPrice();
-    timeSpan span = timeSpan.hour;
-    switch (currentTimeFrame) {
-      case "1h":
-        span = timeSpan.minute;
-        break;
-      case "1d":
-        span = timeSpan.hour;
-        break;
-      case "1w":
-        span = timeSpan.day;
-        break;
-      case "1m":
-        span = timeSpan.week;
-        break;
-      case "1y":
-        span = timeSpan.month;
-        break;
-    }
-    var res = await getPolygonData("C:${items[currentSelect].ticker}", span);
+    var res = await getPolygonData(
+        "C:${items[currentSelect].ticker}", currentTimeFrame);
     PolygonResponse pr = PolygonResponse.fromJson(res);
     list = [];
     pr.results?.map((e) => list.add(GraphPoint.fromResponse(e))).toList();
-    list.add(GraphPoint(
-        list.last.time.add(const Duration(minutes: 1)), currentPrice));
+    DateTime last = list.last.time!.add(Duration(minutes: currentTimeFrame));
+    int length = list.length;
+    list.add(GraphPoint(last, currentPrice));
+    currentTimeIndex = list.length;
+    for (int i = 1; i <= length * 0.3; i++) {
+      last = last.add(Duration(minutes: currentTimeFrame));
+      list.add(GraphPoint(last, null));
+    }
   }
 
   @override
@@ -148,7 +131,6 @@ class _TradingHomepageState extends State<TradingHomepage> {
             if (snapshots.connectionState == ConnectionState.done) {
               return SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     const SizedBox(
                       height: 10,
@@ -167,255 +149,133 @@ class _TradingHomepageState extends State<TradingHomepage> {
                     ),
 
                     ///mainrow
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                              height: MediaQuery.of(context).size.height / 15,
-                              width: MediaQuery.of(context).size.width / 2,
-                              color: const Color(0xff29214d),
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<int>(
-                                  // Initial Value
-                                  value: currentSelect,
-                                  dropdownColor: const Color(0xff29214d),
-
-                                  // Down Arrow Icon
-                                  icon: const Icon(Icons.keyboard_arrow_down),
-
-                                  // Array list of items
-                                  items: [
-                                    for (int i = 0; i < items.length; i++)
-                                      DropdownMenuItem(
-                                        value: i,
-                                        child: Row(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 5,
-                                                      vertical: 2),
-                                              child: CircleAvatar(
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                radius: 25,
-                                                child: Stack(
-                                                  children: [
-                                                    Align(
-                                                      alignment:
-                                                          Alignment.topLeft,
-                                                      child: Image.network(
-                                                        items[i].baseImg,
-                                                        height: 30,
-                                                        width: 30,
-                                                        fit: BoxFit.contain,
-                                                      ),
-                                                    ),
-                                                    Align(
-                                                      alignment:
-                                                          Alignment.bottomRight,
-                                                      child: Image.network(
-                                                        items[i].mainImg,
-                                                        height: 30,
-                                                        width: 30,
-                                                        fit: BoxFit.contain,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            Text(
-                                              items[i].text,
-                                              style: const TextStyle(
-                                                  color: Colors.white60,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                  ],
-                                  // After selecting the desired option,it will
-                                  // change button value to selected value
-                                  onChanged: (int? newValue) {
-                                    setState(() {
-                                      currentSelect = newValue!;
-                                    });
-                                  },
-                                ),
-                              )),
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            height: MediaQuery.of(context).size.height / 15,
-                            width: MediaQuery.of(context).size.width / 2,
-                            color: const Color(0xff29214d),
-                            child: Column(
-                              children: [
-                                const ReuseableText(
-                                    text: 'Graph Time Frame',
-                                    size: 14,
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.white60,
-                                    wordSpacing: 0),
-                                Row(
-                                  children: const [
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 15, left: 10),
-                                      child: ReuseableText(
-                                          text: '60 min',
-                                          size: 12,
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.white60,
-                                          wordSpacing: 0),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 15, left: 10),
-                                      child: ReuseableText(
-                                          text: '30 min',
-                                          size: 12,
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.white60,
-                                          wordSpacing: 0),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 15, left: 10),
-                                      child: ReuseableText(
-                                          text: '3 min',
-                                          size: 12,
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.white60,
-                                          wordSpacing: 0),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 15, left: 10),
-                                      child: ReuseableText(
-                                          text: '1min ',
-                                          size: 12,
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.white60,
-                                          wordSpacing: 0),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: GraphWidgetList(
-                        lst: list,
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          radius: 25,
+                          child: Stack(
+                            children: [
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Image.network(
+                                  items[currentSelect].baseImg,
+                                  height: 30,
+                                  width: 30,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.bottomRight,
+                                child: Image.network(
+                                  items[currentSelect].mainImg,
+                                  height: 30,
+                                  width: 30,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        title: Text(
+                          items[currentSelect].text,
+                          style: const TextStyle(
+                              color: Colors.white60,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        trailing: Text(
+                          items[currentSelect].percentage + "%",
+                          style: const TextStyle(
+                              color: Colors.green,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
-                    Row(
-                      children: [
-                        for (String item in timeFrame)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 5),
-                            child: ActionChip(
-                              labelPadding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 5),
-                              backgroundColor: item == currentTimeFrame
-                                  ? Colors.white10
-                                  : Color(0xff29214d),
-                              label: Text(
-                                item,
-                                style: TextStyle(
-                                    color: item == currentTimeFrame
-                                        ? Colors.black
-                                        : Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold),
+                    StreamBuilder<List<GraphPoint>>(
+                      stream: dataStream(),
+                      builder: (context, snapshot) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GraphWidgetList(
+                            ticker: items[currentSelect].ticker,
+                            timeframe: currentTimeFrame,
+                          ),
+                        );
+                      },
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height / 15,
+                      child: ListView(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          for (int item in timeFrame)
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: ActionChip(
+                                labelPadding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 5),
+                                backgroundColor: item == currentTimeFrame
+                                    ? Colors.white10
+                                    : Color(0xff29214d),
+                                label: Text(
+                                  "${item} m",
+                                  style: TextStyle(
+                                      color: item == currentTimeFrame
+                                          ? Colors.black
+                                          : Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                onPressed: () {
+                                  setState(
+                                    () {
+                                      currentTimeFrame = item;
+                                    },
+                                  );
+                                },
                               ),
-                              onPressed: () {
-                                setState(() {
-                                  currentTimeFrame = item;
-                                });
-                              },
-                            ),
-                          )
-                      ],
+                            )
+                        ],
+                      ),
                     ),
                     Row(
                       children: [
                         Expanded(
                           child: Column(
                             children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 5),
-                                    height: 35,
-                                    width: 28,
-                                    child: MaterialButton(
-                                      elevation: 0,
-                                      onPressed: () {
-                                        /*Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const SuccessfulScreen()),
-                          );*/
-                                      },
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(1),
-                                      ),
-                                      color: const Color(0xff29214d),
-                                      child: const Text('-',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold)),
-                                    ),
+                              Container(
+                                margin: const EdgeInsets.only(
+                                  top: 20,
+                                ),
+                                height: MediaQuery.of(context).size.height / 18,
+                                width: MediaQuery.of(context).size.width / 3,
+                                child: TextField(
+                                  controller: amount,
+                                  keyboardType: TextInputType.number,
+                                  style: const TextStyle(
+                                      color: Colors.white60,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                  decoration: const InputDecoration(
+                                    // border: OutlineInputBorder(
+                                    //   borderRadius: BorderRadius.circular(10),
+                                    // ),
+                                    labelStyle: TextStyle(
+                                        color: Colors.white60,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                    hintText: '0',
+                                    hintStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 2),
-                                    child: VerticalDividerWidget(),
-                                  ),
-                                  const ReuseableText(
-                                      text: "Invest- ₹20.00",
-                                      size: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      wordSpacing: 0),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 5),
-                                    child: VerticalDividerWidget(),
-                                  ),
-                                  Container(
-                                    height: 35,
-                                    width: 28,
-                                    child: MaterialButton(
-                                      elevation: 0,
-                                      onPressed: () {
-                                        /*Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const SuccessfulScreen()),
-                          );*/
-                                      },
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(1),
-                                      ),
-                                      color: const Color(0xff29214d),
-                                      child: const Text('-',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold)),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
                               Container(
                                 margin: const EdgeInsets.only(
@@ -426,11 +286,7 @@ class _TradingHomepageState extends State<TradingHomepage> {
                                 child: MaterialButton(
                                   elevation: 0,
                                   onPressed: () {
-                                    saveOrderDialog("2");
-                                    /*Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const SuccessfulScreen()),
-                          );*/
+                                    saveOrder("2");
                                   },
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(2),
@@ -451,75 +307,39 @@ class _TradingHomepageState extends State<TradingHomepage> {
                             ],
                           ),
                         ),
-                        Container(
-                          margin: const EdgeInsets.only(
-                            right: 6,
-                            top: 10,
-                          ),
-                          height: MediaQuery.of(context).size.height / 8,
-                          width: MediaQuery.of(context).size.width / 4.5,
-                          decoration: BoxDecoration(
-                              color: const Color(0xff29214d),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: ReuseableText(
-                                    text: "Profit",
-                                    size: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    wordSpacing: 0),
-                              ),
-                              ReuseableText(
-                                  text: "89%",
-                                  size: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.green,
-                                  wordSpacing: 0),
-                            ],
-                          ),
-                        ),
                         Expanded(
                           child: Column(
                             children: [
                               Container(
-                                margin: const EdgeInsets.only(left: 2),
-                                height: MediaQuery.of(context).size.height / 17,
-                                width: MediaQuery.of(context).size.width / 3,
-                                decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Padding(
-                                      padding: EdgeInsets.only(left: 10),
-                                      child: ReuseableText(
-                                          text: "Multi Click",
-                                          size: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                          wordSpacing: 0),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 10),
-                                      child: FlutterSwitch(
-                                        width: 30.0,
-                                        height: 20.0,
-                                        value: status1,
-                                        onToggle: (val) {
-                                          setState(() {
-                                            status1 = val;
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                  ],
+                                margin: const EdgeInsets.only(
+                                  top: 20,
                                 ),
+                                height: MediaQuery.of(context).size.height / 18,
+                                width: MediaQuery.of(context).size.width / 3,
+                                child:
+                                    StatefulBuilder(builder: (context, setS) {
+                                  return DropdownButton<int>(
+                                    value: bid_time,
+                                    dropdownColor: Color(0xff29214d),
+                                    items: [3, 5, 10, 15]
+                                        .map((int dropDownStringItem) {
+                                      return DropdownMenuItem<int>(
+                                        value: dropDownStringItem,
+                                        child: Text(
+                                            "$dropDownStringItem Minutes",
+                                            style: const TextStyle(
+                                                color: Colors.white60,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold)),
+                                      );
+                                    }).toList(),
+                                    onChanged: (int? newValue) {
+                                      setS(() {
+                                        bid_time = newValue!;
+                                      });
+                                    },
+                                  );
+                                }),
                               ),
                               Container(
                                 margin: const EdgeInsets.only(
@@ -530,7 +350,7 @@ class _TradingHomepageState extends State<TradingHomepage> {
                                 child: MaterialButton(
                                   elevation: 0,
                                   onPressed: () {
-                                    saveOrderDialog("1");
+                                    saveOrder("1");
                                   },
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(2),
@@ -557,161 +377,80 @@ class _TradingHomepageState extends State<TradingHomepage> {
                 ),
               );
             }
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }),
     );
   }
 
-  Future<void> saveOrderDialog(String type) async {
-    String amount = "";
-    String bid_time = "3 Minutes";
-    List<String> lst = ["3", "5", "10", "15"];
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Color(0xff29214d),
-          title: Text(type == "1" ? "Call" : "Put",
-              style: TextStyle(
-                  color: Colors.white60,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Row(
-                children: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                    child: CircleAvatar(
-                      backgroundColor: Colors.transparent,
-                      radius: 18,
-                      child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Image.network(
-                              items[currentSelect].baseImg,
-                              height: 25,
-                              width: 25,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Image.network(
-                              items[currentSelect].mainImg,
-                              height: 25,
-                              width: 25,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    items[currentSelect].text,
-                    style: const TextStyle(
-                        color: Colors.white60,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              TextField(
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  amount = value;
-                },
-                style: const TextStyle(
-                    color: Colors.white60,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold),
-                decoration: const InputDecoration(
-                  labelText: 'Amount',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.white60,
-                    ),
-                  ),
-                  labelStyle: TextStyle(
-                      color: Colors.white60,
-                      fontSize: 16,
+  Future<void> saveOrder(String type) async {
+    SaveOrderResponse res = await _apiClient.saveOrder(
+        _user.id,
+        amount.text,
+        items[currentSelect].id,
+        type,
+        currentPrice.toString(),
+        "$bid_time Minutes");
+    if (res.status == 200) {
+      currentOrder = OrderData(
+          orderid: res.orderid ?? "",
+          datetime: res.datetime ?? "",
+          bind_price: currentPrice.toString(),
+          bid_time: bid_time,
+          amount: amount.text);
+
+      showMaterialModalBottomSheet(
+        context: context,
+        builder: (context) => Container(
+          height: MediaQuery.of(context).size.height / 7,
+          color: const Color(0xff29214d),
+          child: Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(top: 20),
+                child: Text(
+                  "Order Placed",
+                  style: TextStyle(
+                      color: Colors.yellow,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(
-                height: 10,
+              Container(
+                margin: const EdgeInsets.only(
+                  top: 20,
+                ),
+                child: CountdownTimer(
+                  endTime: DateTime.now().millisecondsSinceEpoch +
+                      (bid_time * 60 * 1000),
+                  textStyle: const TextStyle(
+                      color: Colors.white60,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                  onEnd: () async {
+                    ApiResponse res =
+                        await _apiClient.getOrderDetails(currentOrder!.orderid);
+                    Navigator.pop(context);
+                  },
+                ),
               ),
-              StatefulBuilder(
-                  builder: (BuildContext context, StateSetter setS) {
-                return DropdownButton(
-                    value: bid_time,
-                    dropdownColor: Color(0xff29214d),
-                    items: lst.map((String dropDownStringItem) {
-                      return DropdownMenuItem<String>(
-                        value: "$dropDownStringItem Minutes",
-                        child: Text("$dropDownStringItem Minutes",
-                            style: const TextStyle(
-                                color: Colors.white60,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold)),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setS(() {
-                        bid_time = newValue!;
-                      });
-                    });
-              }),
             ],
           ),
-          actions: <Widget>[
-            TextButton(
-                child: const Text('Cancel'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                }),
-            TextButton(
-              child: const Text('Confirm'),
-              onPressed: () async {
-                ApiResponse res = await _apiClient.saveOrder(
-                    _user.id,
-                    amount,
-                    items[currentSelect].id,
-                    type,
-                    currentPrice.toString(),
-                    bid_time);
-                if (res.status == 200) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        res.messages,
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
-                  Navigator.of(context).pop();
-                }
-              },
-            ),
-          ],
-        );
-      },
-    );
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            res.messages,
+            style: const TextStyle(
+                color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }
 
@@ -724,4 +463,19 @@ class VerticalDividerWidget extends StatelessWidget {
       color: Colors.white60,
     );
   }
+}
+
+class OrderData {
+  final String orderid;
+  final String datetime;
+  final String bind_price;
+  final int bid_time;
+  final String amount;
+
+  OrderData(
+      {required this.orderid,
+      required this.datetime,
+      required this.bind_price,
+      required this.bid_time,
+      required this.amount});
 }

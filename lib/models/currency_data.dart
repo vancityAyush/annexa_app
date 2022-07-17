@@ -7,7 +7,7 @@ class CurrencyData {
   final String id;
   final String base_currency;
   final String mian_currency;
-
+  final String percentage;
   final String ticker;
   final String base_imgurl;
   final String? main_imgurl;
@@ -23,6 +23,7 @@ class CurrencyData {
     required this.mian_currency,
     required this.ticker,
     required this.base_imgurl,
+    required this.percentage,
     this.main_imgurl,
     this.stock_type,
   });

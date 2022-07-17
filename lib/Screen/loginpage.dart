@@ -4,6 +4,7 @@ import 'package:annexa_app/Widget/reuseable_text.dart';
 import 'package:annexa_app/main.dart';
 import 'package:annexa_app/models/OAuthUser.dart';
 import 'package:annexa_app/network/api_client.dart';
+import 'package:annexa_app/network/response/login_response.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -120,39 +121,29 @@ class _LoginPageState extends State<LoginPage> {
                   width: MediaQuery.of(context).size.width / 3,
                   child: MaterialButton(
                     elevation: 0,
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text('Login Successfully'),
-                        backgroundColor: Colors.green,
-                      ));
-                      _apiClient
-                          .login(
-                              _emailController.text, _passwordController.text)
-                          .then((value) {
-                        if (value.status == 200) {
-                          User user = User(
-                              id: value.data.id,
-                              name: value.data.name,
-                              email: value.data.emailid,
-                              password: value.data.password,
-                              phone: value.data.mobileno,
-                              wallet_balance: value.Wallet_Balance);
-                          getIt.registerSingleton<User>(user);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MainPage(),
-                            ),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(value.messages),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
-                        }
-                      });
+                    onPressed: () async {
+                      LoginResponse res = await User.login(
+                          _emailController.text, _passwordController.text);
+                      if (res.status == 200) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(res.messages),
+                          backgroundColor: Colors.green,
+                        ));
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MainPage(),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(res.messages),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                      ;
                     },
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),

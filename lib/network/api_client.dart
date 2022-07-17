@@ -1,8 +1,10 @@
+import 'package:annexa_app/network/entity/crypto_entity.dart';
 import 'package:annexa_app/network/response/currency_response.dart';
 import 'package:annexa_app/network/response/login_response.dart';
 import 'package:annexa_app/network/response/order_history_response.dart';
 import 'package:annexa_app/network/response/rate_response.dart';
 import 'package:annexa_app/network/response/response.dart';
+import 'package:annexa_app/network/response/save_order_response.dart';
 import 'package:annexa_app/network/response/wallet_response.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
@@ -29,7 +31,7 @@ abstract class ApiClient {
 
   @POST("https://annexa.frantic.in/Api/save_order")
   @FormUrlEncoded()
-  Future<ApiResponse> saveOrder(
+  Future<SaveOrderResponse> saveOrder(
     @Field() String customerid,
     @Field() String amount,
     @Field() String stock_id,
@@ -54,4 +56,13 @@ abstract class ApiClient {
   @GET('/getorder_history')
   Future<OrderHistoryResponse> getOrderHistory(
       @Query('customerid') String customerid);
+
+  @GET('https://annexa.frantic.in/Api/orderdetails')
+  Future<ApiResponse> getOrderDetails(@Query('orderid') String orderid);
+
+  @GET('https://api.wazirx.com/sapi/v1/tickers/24hr')
+  Future<List<CryptoEntity>> getCryptoData();
+
+  @GET("https://api.wazirx.com/sapi/v1/ticker/24hr")
+  Future<CryptoEntity> getCrypto(@Query('symbol') String symbol);
 }

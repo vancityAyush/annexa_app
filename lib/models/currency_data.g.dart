@@ -12,6 +12,7 @@ CurrencyData _$CurrencyDataFromJson(Map<String, dynamic> json) => CurrencyData(
       mian_currency: json['mian_currency'] as String,
       ticker: json['ticker'] as String,
       base_imgurl: json['base_imgurl'] as String,
+      percentage: json['percentage'] as String,
       main_imgurl: json['main_imgurl'] as String?,
       stock_type: json['stock_type'] as String?,
     );
@@ -21,6 +22,7 @@ Map<String, dynamic> _$CurrencyDataToJson(CurrencyData instance) =>
       'id': instance.id,
       'base_currency': instance.base_currency,
       'mian_currency': instance.mian_currency,
+      'percentage': instance.percentage,
       'ticker': instance.ticker,
       'base_imgurl': instance.base_imgurl,
       'main_imgurl': instance.main_imgurl,

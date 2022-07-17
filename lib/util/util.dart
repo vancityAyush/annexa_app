@@ -47,6 +47,10 @@ Widget getAssetImage(BuildContext context,
   );
 }
 
+const IconData eye = IconData(
+  0xf424,
+);
+const IconData eye_solid = IconData(0xf425);
 final emailKey = 'email';
 final passwordKey = 'password';
 final apiKey = "kVTw4WmEJON8jyV0vczS86FEpTu1Dq3d";

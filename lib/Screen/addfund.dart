@@ -252,14 +252,12 @@ class _AddFundState extends State<AddFund> {
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.hasData) {
                 WalletResponse res = snapshot.data;
-                return Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      for (WalletData item in res.data)
-                        ReuseableMoneyCard(data: item)
-                    ],
-                  ),
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    for (WalletData item in res.data)
+                      ReuseableMoneyCard(data: item)
+                  ],
                 );
               } else
                 return const Center(child: CircularProgressIndicator());

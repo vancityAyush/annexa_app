@@ -28,7 +28,6 @@ class TradingHomepage extends StatefulWidget {
 class _TradingHomepageState extends State<TradingHomepage> {
   int currentSelect = 0;
   List<CurrencyData> items = [];
-  List<GraphPoint> list = [];
   double currentPrice = 0.0;
   List<int> timeFrame = [5, 10, 15, 30, 60];
   int currentTimeFrame = 5;
@@ -58,17 +57,6 @@ class _TradingHomepageState extends State<TradingHomepage> {
     return res.data;
   }
 
-  Stream<List<GraphPoint>> dataStream() async* {
-    while (true) {
-      await getCurrentPrice();
-      await Future.delayed(Duration(minutes: currentTimeFrame));
-      list.removeAt(0);
-      list[currentTimeIndex].value = currentPrice;
-      currentTimeIndex++;
-      yield list;
-    }
-  }
-
   Future<void> fetchData() async {
     CurrencyResponse cr = await _apiClient.getForexCurrency();
     items = cr.data;
@@ -76,16 +64,6 @@ class _TradingHomepageState extends State<TradingHomepage> {
     var res = await getPolygonData(
         "C:${items[currentSelect].ticker}", currentTimeFrame);
     PolygonResponse pr = PolygonResponse.fromJson(res);
-    list = [];
-    pr.results?.map((e) => list.add(GraphPoint.fromResponse(e))).toList();
-    DateTime last = list.last.time!.add(Duration(minutes: currentTimeFrame));
-    int length = list.length;
-    list.add(GraphPoint(last, currentPrice));
-    currentTimeIndex = list.length;
-    for (int i = 1; i <= length * 0.3; i++) {
-      last = last.add(Duration(minutes: currentTimeFrame));
-      list.add(GraphPoint(last, null));
-    }
   }
 
   @override
@@ -194,17 +172,12 @@ class _TradingHomepageState extends State<TradingHomepage> {
                         ),
                       ),
                     ),
-                    StreamBuilder<List<GraphPoint>>(
-                      stream: dataStream(),
-                      builder: (context, snapshot) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: GraphWidgetList(
-                            ticker: items[currentSelect].ticker,
-                            timeframe: currentTimeFrame,
-                          ),
-                        );
-                      },
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GraphWidgetList(
+                        ticker: "C:EURUSD",
+                        timeframe: currentTimeFrame,
+                      ),
                     ),
                     Container(
                       height: MediaQuery.of(context).size.height / 15,

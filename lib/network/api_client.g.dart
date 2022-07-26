@@ -74,7 +74,7 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<RateResponse> getRateFluctute() async {
+  Future<RateResponse> getForexRate() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -175,55 +175,35 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<ApiResponse> getOrderDetails(orderid) async {
+  Future<OrderHistoryResponse> getOrderDetails(orderid) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'orderid': orderid};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ApiResponse>(
+        _setStreamType<OrderHistoryResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(
                     _dio.options, 'https://annexa.frantic.in/Api/orderdetails',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ApiResponse.fromJson(_result.data!);
+    final value = OrderHistoryResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<List<CryptoEntity>> getCryptoData() async {
+  Future<dynamic> getPolygonData(tick, ran, from, to, apiKey) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<List<CryptoEntity>>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(
-                    _dio.options, 'https://api.wazirx.com/sapi/v1/tickers/24hr',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    var value = _result.data!
-        .map((dynamic i) => CryptoEntity.fromJson(i as Map<String, dynamic>))
-        .toList();
-    return value;
-  }
-
-  @override
-  Future<CryptoEntity> getCrypto(symbol) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'symbol': symbol};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<CryptoEntity>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(
-                    _dio.options, 'https://api.wazirx.com/sapi/v1/ticker/24hr',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = CryptoEntity.fromJson(_result.data!);
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+            method: 'GET', headers: _headers, extra: _extra)
+        .compose(_dio.options,
+            'https://api.polygon.io/v2/aggs/ticker/${tick}/range/${ran}/minute/${from}/${to}?adjusted=true&sort=asc&limit=999999999&apiKey=${apiKey}',
+            queryParameters: queryParameters, data: _data)
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data;
     return value;
   }
 

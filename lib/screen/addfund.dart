@@ -1,11 +1,5 @@
-import 'dart:math';
-
 import 'package:annexa_app/Widget/reuseable_text.dart';
-import 'package:annexa_app/main.dart';
-import 'package:annexa_app/models/OAuthUser.dart';
 import 'package:annexa_app/models/wallet_data.dart';
-import 'package:annexa_app/network/api_client.dart';
-import 'package:annexa_app/network/response/response.dart';
 import 'package:annexa_app/network/response/wallet_response.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +14,6 @@ class AddFund extends StatefulWidget {
 }
 
 class _AddFundState extends State<AddFund> {
-  final _user = getIt<User>();
-  final apiClient = getIt<ApiClient>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,8 +41,8 @@ class _AddFundState extends State<AddFund> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
-                          children: [
-                            const Padding(
+                          children: const [
+                            Padding(
                                 padding: EdgeInsets.only(left: 8, top: 30),
                                 child: ReuseableText(
                                   color: Colors.white,
@@ -60,11 +52,11 @@ class _AddFundState extends State<AddFund> {
                                   text: 'Available Balance',
                                 )),
                             Padding(
-                              padding: const EdgeInsets.symmetric(
+                              padding: EdgeInsets.symmetric(
                                   horizontal: 50, vertical: 5),
                               child: Text(
-                                ' \u{20B9}${_user.wallet_balance ?? 0.0}',
-                                style: const TextStyle(
+                                ' \u{20B9}${0.0}',
+                                style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
                                     fontWeight: FontWeight.normal),
@@ -104,7 +96,7 @@ class _AddFundState extends State<AddFund> {
                       ),
                       color: const Color(0xff29214d),
                       child: const Text('Withdraw Funds',
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: Colors.white60,
                               fontSize: 14,
                               fontWeight: FontWeight.bold)),
@@ -157,12 +149,12 @@ class _AddFundState extends State<AddFund> {
                                         fontWeight: FontWeight.bold),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide(
+                                      borderSide: const BorderSide(
                                           color: Colors.white60, width: 1),
                                     ),
                                   ),
                                   onChanged: (value) {
-                                    amount = value!;
+                                    amount = value;
                                   },
                                   keyboardType: TextInputType.number,
                                 ),
@@ -177,26 +169,26 @@ class _AddFundState extends State<AddFund> {
                                   TextButton(
                                     child: const Text('Add'),
                                     onPressed: () async {
-                                      ApiResponse res =
-                                          await apiClient.savePayment(
-                                              _user.id,
-                                              amount,
-                                              Random()
-                                                  .nextInt(999999999)
-                                                  .toString(),
-                                              "11",
-                                              "Success");
-                                      if (res.status == 200) {
-                                        Navigator.of(dialogContext).pop();
-                                      }
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(res.messages),
-                                          backgroundColor: Colors.green,
-                                          duration: Duration(seconds: 2),
-                                        ),
-                                      );
+                                      // ApiResponse res =
+                                      //     await apiClient.savePayment(
+                                      //         _user.id,
+                                      //         amount,
+                                      //         Random()
+                                      //             .nextInt(999999999)
+                                      //             .toString(),
+                                      //         "11",
+                                      //         "Success");
+                                      // if (res.status == 200) {
+                                      //   Navigator.of(dialogContext).pop();
+                                      // }
+                                      // ScaffoldMessenger.of(context)
+                                      //     .showSnackBar(
+                                      //   SnackBar(
+                                      //     content: Text(res.messages),
+                                      //     backgroundColor: Colors.green,
+                                      //     duration: const Duration(seconds: 2),
+                                      //   ),
+                                      // );
                                     },
                                   )
                                 ],
@@ -223,8 +215,8 @@ class _AddFundState extends State<AddFund> {
                 ],
               ),
               const Padding(
-                padding: const EdgeInsets.only(left: 16, top: 10),
-                child: const ReuseableText(
+                padding: EdgeInsets.only(left: 16, top: 10),
+                child: ReuseableText(
                     text: "PAST TRANSACTION",
                     size: 16,
                     fontWeight: FontWeight.normal,
@@ -248,7 +240,7 @@ class _AddFundState extends State<AddFund> {
             ],
           ),
           FutureBuilder<WalletResponse>(
-            future: apiClient.getWallet(_user.id),
+            // future: apiClient.getWallet(_user.id),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.hasData) {
                 WalletResponse res = snapshot.data;

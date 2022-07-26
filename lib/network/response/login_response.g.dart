@@ -11,8 +11,10 @@ LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
       status: json['status'] as int,
       messages: json['messages'] as String,
       error: json['error'] as String,
-      data: LoginData.fromJson(json['data'] as Map<String, dynamic>),
-      Wallet_Balance: json['Wallet_Balance'] as String?,
+      data: json['data'] == null
+          ? null
+          : LoginData.fromJson(json['data'] as Map<String, dynamic>),
+      walletBalance: json['Wallet_Balance'] as String?,
     );
 
 Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
@@ -21,5 +23,5 @@ Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
       'messages': instance.messages,
       'error': instance.error,
       'data': instance.data,
-      'Wallet_Balance': instance.Wallet_Balance,
+      'Wallet_Balance': instance.walletBalance,
     };

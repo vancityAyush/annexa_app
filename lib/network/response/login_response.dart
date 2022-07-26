@@ -6,15 +6,16 @@ part 'login_response.g.dart';
 
 @JsonSerializable()
 class LoginResponse extends BaseResponse {
-  final LoginData data;
-  final String? Wallet_Balance;
+  final LoginData? data;
+  @JsonKey(name: 'Wallet_Balance')
+  final String? walletBalance;
 
   LoginResponse({
     required int status,
     required String messages,
     required String error,
     required this.data,
-    required this.Wallet_Balance,
+    required this.walletBalance,
   }) : super(status: status, messages: messages, error: error);
 
   /// Connect the generated [_$PersonFromJson] function to the `fromJson`

@@ -1,4 +1,3 @@
-import 'package:annexa_app/network/entity/crypto_entity.dart';
 import 'package:annexa_app/network/response/currency_response.dart';
 import 'package:annexa_app/network/response/login_response.dart';
 import 'package:annexa_app/network/response/order_history_response.dart';
@@ -27,7 +26,7 @@ abstract class ApiClient {
   @GET("/getforex_currency")
   Future<CurrencyResponse> getForexCurrency();
   @GET("/ratefluctute")
-  Future<RateResponse> getRateFluctute();
+  Future<RateResponse> getForexRate();
 
   @POST("https://annexa.frantic.in/Api/save_order")
   @FormUrlEncoded()
@@ -58,11 +57,20 @@ abstract class ApiClient {
       @Query('customerid') String customerid);
 
   @GET('https://annexa.frantic.in/Api/orderdetails')
-  Future<ApiResponse> getOrderDetails(@Query('orderid') String orderid);
+  Future<OrderHistoryResponse> getOrderDetails(
+      @Query('orderid') String orderid);
 
-  @GET('https://api.wazirx.com/sapi/v1/tickers/24hr')
-  Future<List<CryptoEntity>> getCryptoData();
-
-  @GET("https://api.wazirx.com/sapi/v1/ticker/24hr")
-  Future<CryptoEntity> getCrypto(@Query('symbol') String symbol);
+  @GET(
+      "https://api.polygon.io/v2/aggs/ticker/{tick}/range/{ran}/minute/{from}/{to}?adjusted=true&sort=asc&limit=999999999&apiKey={apiKey}")
+  Future<dynamic> getPolygonData(
+      @Path("tick") String tick,
+      @Path("ran") String range,
+      @Path("from") String from,
+      @Path("to") String to,
+      @Path("apiKey") String apiKey);
+  // @GET('https://api.wazirx.com/sapi/v1/tickers/24hr')
+  // Future<List<CryptoEntity>> getCryptoData();
+  //
+  // @GET("https://api.wazirx.com/sapi/v1/ticker/24hr")
+  // Future<CryptoEntity> getCrypto(@Query('symbol') String symbol);
 }

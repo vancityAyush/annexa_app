@@ -1,9 +1,6 @@
 import 'package:annexa_app/Screen/Transaction.dart';
 import 'package:annexa_app/Screen/withdrawal.dart';
 import 'package:annexa_app/Widget/reuseable_text.dart';
-import 'package:annexa_app/main.dart';
-import 'package:annexa_app/models/OAuthUser.dart';
-import 'package:annexa_app/network/api_client.dart';
 import 'package:annexa_app/network/response/wallet_response.dart';
 import 'package:flutter/material.dart';
 
@@ -20,8 +17,8 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-  final _user = getIt<User>();
-  final apiClient = getIt<ApiClient>();
+  // final _user = getIt<OAuthUser>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,14 +30,14 @@ class _UserProfileState extends State<UserProfile> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                _user.name,
+                "Name",
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 25,
                     fontWeight: FontWeight.bold),
               ),
               Text(
-                _user.email,
+                "Email",
                 style: TextStyle(
                     color: Colors.white60,
                     fontSize: 16,
@@ -81,20 +78,20 @@ class _UserProfileState extends State<UserProfile> {
                         Padding(
                           padding: const EdgeInsets.only(left: 18),
                           child: FutureBuilder<WalletResponse>(
-                              future: apiClient.getWallet(_user.id),
+                              // future: apiClient.getWallet(_user.id),
                               builder: (context, snapshots) {
-                                if (snapshots.hasData) {
-                                  _user.wallet_balance =
-                                      snapshots.data?.Wallet_Balance;
-                                }
-                                return Text(
-                                  '\u{20B9}${_user.wallet_balance ?? 0.0}',
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                );
-                              }),
+                            if (snapshots.hasData) {
+                              // _user.wallet_balance =
+                              snapshots.data?.Wallet_Balance;
+                            }
+                            return Text(
+                              '\u{20B9}${0.0}',
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                            );
+                          }),
                         ),
                       ],
                     ),

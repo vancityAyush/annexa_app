@@ -41,8 +41,10 @@ class homepagecard extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Order()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const OrderPage()));
                     },
                     child: const CircleAvatar(
                       backgroundImage: AssetImage(

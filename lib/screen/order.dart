@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 
 import '../Widget/reuseablecard.dart';
 
-class Order extends StatefulWidget {
-  const Order({Key? key}) : super(key: key);
+class OrderPage extends StatefulWidget {
+  const OrderPage({Key? key}) : super(key: key);
 
   @override
-  _OrderState createState() => _OrderState();
+  _OrderPageState createState() => _OrderPageState();
 }
 
-class _OrderState extends State<Order> {
+class _OrderPageState extends State<OrderPage> {
   DateTime date = DateTime.now();
   @override
   Widget build(BuildContext context) {
